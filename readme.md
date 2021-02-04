@@ -25,17 +25,11 @@ Para testar utilize o postman, insomnia ou algum outro software com que esteja f
         - Acesse o caminho http://localhost:3000/categories e adicione ao body:
             
             {
-                "name":"wish",
-                "books": [
-                    
-                ]
+                "name":"wish"
             },
 
             {
-                "name":"own",
-                "books": [
-                    
-                ]
+                "name":"own"
             }
 
         para criar categorias para cada tipo de livro.
@@ -61,7 +55,7 @@ Para testar utilize o postman, insomnia ou algum outro software com que esteja f
     
     |_ PUT
 
-        - Acesse o caminho http://localhost:3000/categories/{id} adicione o corpo, igual ao post e edite as partes necessárias. Caso necessite atualizar algum livro basta trocar "categories" por "books" e adicionar o id referente a entidade
+        - Acesse o caminho http://localhost:3000/categories/{id} adicione o corpo, igual ao post e edite as partes necessárias. Caso necessite atualizar algum livro basta trocar "categories" por "books" e adicionar o id referente a entidade. NÃO É POSSÍVEL ATUALIZAR LIVROS A PARTIR DA ROTA "CATEGORY".
 
     |_DELETE
 
