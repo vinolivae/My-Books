@@ -23,19 +23,7 @@ exports.findById = async (req, res) => {
 
 exports.create = async (req, res) =>{
     try{
-        const{name, books} = req.body;
-
-        const category = await Category.create({name});
-
-        await Promise.all(books.map(async book => {
-            const categoryBook = new Book({...book, category: category._id});
-
-            await categoryBook.save();
-
-            category.books.push(categoryBook);
-        }));
-
-        await category.save();
+        const category = await Category.create(req.body);
 
         return res.send({category});
     }
@@ -46,23 +34,7 @@ exports.create = async (req, res) =>{
 
 exports.update = async (req, res) => {
     try{
-        const{name, books} = req.body;
-
-        const category = await Category.findByIdAndUpdate(req.params.id, {name}, {new: true});
-
-        category.books = [];
-        await Book.remove({category: category._id});
-
-        await Promise.all(books.map(async book => {
-            const categoryBook = new Book({...book, category: category._id});
-
-            await categoryBook.save();
-
-            category.books.push(categoryBook);
-        }));
-
-        await category.save();
-
+        const category = await Category.findByIdAndUpdate(req.params.id, req.body, {new: true});
         return res.send({category});
     }
     catch(err){
