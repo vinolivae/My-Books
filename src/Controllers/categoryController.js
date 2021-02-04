@@ -3,7 +3,7 @@ const Book = require('../Models/book');
 
 exports.findAll = async (req, res) => {
     try{
-        const category = await Category.find({}).populate('book');
+        const category = await Category.find({}).populate('books');
         return res.send({category});
     }
     catch(err){
@@ -13,7 +13,7 @@ exports.findAll = async (req, res) => {
 
 exports.findById = async (req, res) => {
     try{
-        const category = await Category.findById(req.params.id).populate('book');
+        const category = await Category.findById(req.params.id).populate('books');
         return res.send({category});
     }
     catch(err){
@@ -27,13 +27,13 @@ exports.create = async (req, res) =>{
 
         const category = await Category.create({name});
 
-        books.map(book => {
+        await Promise.all(books.map(async book => {
             const categoryBook = new Book({...book, category: category._id});
 
-            categoryBook.save()
-            .then(book => category.books.push(book))
-            .catch(err => res.status(400).send({err}));
-        });
+            await categoryBook.save();
+
+            category.books.push(categoryBook);
+        }));
 
         await category.save();
 
@@ -41,6 +41,32 @@ exports.create = async (req, res) =>{
     }
     catch(err){
         return res.status(400).send({error: `A categoria não pode ser criada: ${err}`})
+    }
+};
+
+exports.update = async (req, res) => {
+    try{
+        const{name, books} = req.body;
+
+        const category = await Category.findByIdAndUpdate(req.params.id, {name}, {new: true});
+
+        category.books = [];
+        await Book.remove({category: category._id});
+
+        await Promise.all(books.map(async book => {
+            const categoryBook = new Book({...book, category: category._id});
+
+            await categoryBook.save();
+
+            category.books.push(categoryBook);
+        }));
+
+        await category.save();
+
+        return res.send({category});
+    }
+    catch(err){
+        return res.status(400).send({error: `A categoria não pode ser atualizada: ${err}`})
     }
 };
 

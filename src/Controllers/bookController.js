@@ -5,9 +5,9 @@ exports.create = async (req, res) => {
     try {
         const book = await Book.create(req.body);
 
-        // const category = await Category.findById({_id: book.category})
-        // category.books.push(book);
-        // await category.save();
+        const category = await Category.findById({_id: book.category});
+        category.books.push(book);
+        await category.save();
         
         return res.send({ book });
     }
