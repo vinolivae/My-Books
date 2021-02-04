@@ -29,7 +29,7 @@ Para testar utilize o postman, insomnia ou algum outro software com que esteja f
                 "books": [
                     
                 ]
-            }
+            },
 
             {
                 "name":"own",
