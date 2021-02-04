@@ -12,27 +12,27 @@ exports.create = async (req, res) => {
         return res.send({ book });
     }
     catch (err) {
-        return res.status(400).send({ error: 'Algum erro ocorreu ao tentar criar o livro' });
+        return res.status(400).send({ error: `Algum erro ocorreu ao tentar criar o livro: ${err}`});
     }
 };
 
 exports.findAll = async (req, res) => {
     try {
-        const book = await Book.find({});
+        const book = await Book.find({}).populate('category');
         return res.send({ book });
     }
     catch (err) {
-        return res.status(400).send({ error: 'Não foi possivel encontrar os livros' });
+        return res.status(400).send({ error: `Não foi possivel encontrar os livros: ${err}`});
     }
 };
 
 exports.findOne = async (req, res) => {
     try{
-        const book = await Book.findById(req.params.id);
+        const book = await Book.findById(req.params.id).populate('category');
         return res.send({book});
     }
     catch(err){
-        return res.status(400).send({error: 'Não foi possivel encontrar o livro'});
+        return res.status(400).send({error: `Não foi possivel encontrar o livro: ${err}`});
     }
 };
 
@@ -44,7 +44,7 @@ exports.update = async (req, res) => {
     }
     catch(err)
     {
-        return res.status(400).send({error: 'Não foi possivel atualziar o livro'});
+        return res.status(400).send({error: `Não foi possivel atualziar o livro : ${err}`});
     }
 };
 
@@ -55,7 +55,7 @@ exports.delete = async (req, res) => {
         return res.status(200).send({message: 'Livro removido com sucesso'});
     }
     catch(err){
-        return res.status(400).send({error: 'Não foi possivel remover o livro'});
+        return res.status(400).send({error: `Não foi possivel remover o livro: ${err}`});
     }
 };
 

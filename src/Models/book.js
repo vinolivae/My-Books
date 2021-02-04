@@ -1,4 +1,3 @@
-const { mongo } = require('../Data');
 const mongoose = require('../Data');
 
 const BookSchema = mongoose.Schema({
@@ -9,7 +8,7 @@ const BookSchema = mongoose.Schema({
     category: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Category',
-        //required: true
+        required: true
     },
     createdAt: {
         type: Date,
